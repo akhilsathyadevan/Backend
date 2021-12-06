@@ -40,7 +40,7 @@ function verifyToken(req, res, next) {
     next()
   }
 
-app.get('/api/books',verifyToken,function(req,res){
+app.get('/api/books',function(req,res){
     console.log("/api books data entered")
     
     BookData.find()
