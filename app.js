@@ -56,19 +56,19 @@ app.get('/api/books',function(req,res){
                     
                  
 });
-app.get('/api/book/:id',verifyToken,function(req,res){
+app.get('/api/book/:id',function(req,res){
     const id=req.params.id;
     BookData.findOne({'_id':id})
     .then((book)=>
     res.send(book))
 })
-app.get('/api/author/:id',verifyToken,function(req,res){
+app.get('/api/author/:id',function(req,res){
     const id=req.params.id;
     Authordata.findOne({'_id':id})
     .then((author)=>
     res.send(author))
 })
-app.post('/api/insertbook',verifyToken,function(req,res){
+app.post('/api/insertbook',function(req,res){
     console.log(req.body);
     var book={
         title: req.body.book.title,
@@ -93,7 +93,7 @@ app.get('/api/authors',function(req,res){
             
 
 });
-app.post('/api/insertauthor',verifyToken,function(req,res){
+app.post('/api/insertauthor',function(req,res){
     console.log(req.body);
     var author={
         name: req.body.author.name,
@@ -103,7 +103,7 @@ app.post('/api/insertauthor',verifyToken,function(req,res){
     var Author=new Authordata(author);
     Author.save();
 })
-app.put('/api/updatebook',verifyToken,function(req,res){
+app.put('/api/updatebook',function(req,res){
     console.log(req.body);
 
     id=req.body._id,
@@ -121,7 +121,7 @@ app.put('/api/updatebook',verifyToken,function(req,res){
     });                            
 
 });
-app.put('/api/updateauthor',verifyToken,function(req,res){
+app.put('/api/updateauthor',function(req,res){
     console.log(req.body);
 
     id=req.body._id,
@@ -137,7 +137,7 @@ app.put('/api/updateauthor',verifyToken,function(req,res){
     });                            
 
 });
-app.delete('/api/deletebook/:id',verifyToken,function(req,res){
+app.delete('/api/deletebook/:id',function(req,res){
     id=req.params.id;
     BookData.findByIdAndDelete({'_id':id})
     .then(()=>{
@@ -146,7 +146,7 @@ app.delete('/api/deletebook/:id',verifyToken,function(req,res){
     })
 
 })
-app.delete('/api/deleteauthor/:id',verifyToken,function(req,res){
+app.delete('/api/deleteauthor/:id',function(req,res){
     id=req.params.id;
     Authordata.findByIdAndDelete({'_id':id})
     .then(()=>{
