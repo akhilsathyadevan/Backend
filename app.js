@@ -37,6 +37,7 @@ function verifyToken(req, res, next) {
   }
 
 app.get('/api/books',function(req,res){
+    console.log("/api books data entered")
     
     BookData.find()
                 .then(function(books){
