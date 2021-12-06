@@ -216,10 +216,9 @@ app.post('/api/signup',(req,res)=>{
           password:req.body.password,
           phone:req.body.phone
     }
-    .then((user)=>{
-        var user=new SignupData(signup);
-        user.save();
-    })
+    var user=new SignupData(signup);
+    user.save();
+
     
 
 })   
