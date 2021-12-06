@@ -14,11 +14,15 @@ app.use(express.static('./dist/Library'));
     
 
 app.use(cors());
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", '*');
+    res.header("Acess-Control-Allow-Methods:GET,POST,PATCH,PUT,DELETE,OPTIONS");
+    next();
+});
+
 // username='admin';
 // password='1234';
-app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname + '/dist/Library/index.html'));
-   });
+
 
 function verifyToken(req, res, next) {
     if(!req.headers.authorization) {
@@ -36,7 +40,7 @@ function verifyToken(req, res, next) {
     next()
   }
 
-app.get('/api/books',function(req,res){
+app.get('/api/books',verifyToken,function(req,res){
     console.log("/api books data entered")
     
     BookData.find()
@@ -52,19 +56,19 @@ app.get('/api/books',function(req,res){
                     
                  
 });
-app.get('/api/book/:id',function(req,res){
+app.get('/api/book/:id',verifyToken,function(req,res){
     const id=req.params.id;
     BookData.findOne({'_id':id})
     .then((book)=>
     res.send(book))
 })
-app.get('/api/author/:id',function(req,res){
+app.get('/api/author/:id',verifyToken,function(req,res){
     const id=req.params.id;
     Authordata.findOne({'_id':id})
     .then((author)=>
     res.send(author))
 })
-app.post('/api/insertbook',function(req,res){
+app.post('/api/insertbook',verifyToken,function(req,res){
     console.log(req.body);
     var book={
         title: req.body.book.title,
@@ -76,7 +80,7 @@ app.post('/api/insertbook',function(req,res){
     Book.save()
 
 });
-app.get('/api/authors',function(req,res){
+app.get('/api/authors',verifyToken,function(req,res){
      Authordata.find()
             .then(function(authors){
               res.send(authors);
@@ -84,7 +88,7 @@ app.get('/api/authors',function(req,res){
             
 
 });
-app.post('/api/insertauthor',function(req,res){
+app.post('/api/insertauthor',verifyToken,function(req,res){
     console.log(req.body);
     var author={
         name: req.body.author.name,
@@ -94,7 +98,7 @@ app.post('/api/insertauthor',function(req,res){
     var Author=new Authordata(author);
     Author.save();
 })
-app.put('/api/updatebook',function(req,res){
+app.put('/api/updatebook',verifyToken,function(req,res){
     console.log(req.body);
 
     id=req.body._id,
@@ -112,7 +116,7 @@ app.put('/api/updatebook',function(req,res){
     });                            
 
 });
-app.put('/api/updateauthor',function(req,res){
+app.put('/api/updateauthor',verifyToken,function(req,res){
     console.log(req.body);
 
     id=req.body._id,
@@ -128,7 +132,7 @@ app.put('/api/updateauthor',function(req,res){
     });                            
 
 });
-app.delete('/api/deletebook/:id',function(req,res){
+app.delete('/api/deletebook/:id',verifyToken,function(req,res){
     id=req.params.id;
     BookData.findByIdAndDelete({'_id':id})
     .then(()=>{
@@ -137,7 +141,7 @@ app.delete('/api/deletebook/:id',function(req,res){
     })
 
 })
-app.delete('/api/deleteauthor/:id',function(req,res){
+app.delete('/api/deleteauthor/:id',verifyToken,function(req,res){
     id=req.params.id;
     Authordata.findByIdAndDelete({'_id':id})
     .then(()=>{
@@ -210,7 +214,10 @@ app.post('/api/signup',(req,res)=>{
     var user=new SignupData(signup);
     user.save();
 
-})    
+})   
+app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname + '/dist/Library/index.html'));
+   }); 
 
 
 app.listen(port,()=>{console.log('server at'+port)})
