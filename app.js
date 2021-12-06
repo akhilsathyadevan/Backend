@@ -55,7 +55,7 @@ app.get('/api/author/:id',function(req,res){
     .then((author)=>
     res.send(author))
 })
-app.post('/api/insertbook',verifyToken,function(req,res){
+app.post('/api/insertbook',function(req,res){
     console.log(req.body);
     var book={
         title: req.body.book.title,
@@ -64,7 +64,7 @@ app.post('/api/insertbook',verifyToken,function(req,res){
         image:req.body.book.image
     }
     var Book=new BookData(book);
-    Book.save();
+    Book.save()
 
 });
 app.get('/api/authors',function(req,res){
@@ -75,7 +75,7 @@ app.get('/api/authors',function(req,res){
             
 
 });
-app.post('/api/insertauthor',verifyToken,function(req,res){
+app.post('/api/insertauthor',function(req,res){
     console.log(req.body);
     var author={
         name: req.body.author.name,
@@ -147,7 +147,8 @@ app.post('/api/login', (req, res) => {
     
     SignupData.findOne({username:userdata.username,
                         password:userdata.password })
-    .then((err,user)=>{
+                        
+    .then((user,err)=>{
         const usname=userdata.username;
         const pas=userdata.password;
         if(err){
@@ -158,16 +159,16 @@ app.post('/api/login', (req, res) => {
                 console.log('user exist');
                 let payload={ subject: usname + pas }
                 let usertoken = jwt.sign(payload, 'user')
-                res.status(200).send({usertoken,role:'user'})
+                res.send({usertoken})
             }
             else if(usname=='admin' && pas=='1234'){
                 console.log('admin exist');
                 let payload={ subject: usname + pas }
                 let admintoken = jwt.sign(payload, 'admin')
-                res.status(200).send({admintoken,role:'admin'})
+                res.send({admintoken})
             }
             else if(user==null){
-                res.status(401).send('user not exist')
+                res.send('user not exist')
             }
             else{
                 res.send('invalid username and password')
@@ -201,5 +202,6 @@ app.post('/api/signup',(req,res)=>{
     user.save();
 
 })    
+
 
 app.listen(port,()=>{console.log('server at'+port)})

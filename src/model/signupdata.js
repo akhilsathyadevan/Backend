@@ -6,7 +6,6 @@ const signupSchema= new schema({
     email:String,
     password:String,
     phone:String
-
 });
 var Signupdata=mongoose.model('signupdata',signupSchema);
 module.exports=Signupdata;
