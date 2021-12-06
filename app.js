@@ -80,7 +80,7 @@ app.post('/api/insertbook',verifyToken,function(req,res){
     Book.save()
 
 });
-app.get('/api/authors',verifyToken,function(req,res){
+app.get('/api/authors',function(req,res){
      Authordata.find()
             .then(function(authors){
                 console.log('authors successfully send')
