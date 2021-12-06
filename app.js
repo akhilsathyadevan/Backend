@@ -40,8 +40,16 @@ app.get('/api/books',function(req,res){
     
     BookData.find()
                 .then(function(books){
+                    console.log('book successfully send')
                     res.send(books);
-                });
+                    
+                })
+                 .catch(()=>{
+                    console.log("books unsuccessfull")
+                    res.send(false)
+                 })
+                    
+                 
 });
 app.get('/api/book/:id',function(req,res){
     const id=req.params.id;
