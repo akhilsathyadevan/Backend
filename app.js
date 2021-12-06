@@ -83,8 +83,13 @@ app.post('/api/insertbook',verifyToken,function(req,res){
 app.get('/api/authors',verifyToken,function(req,res){
      Authordata.find()
             .then(function(authors){
+                console.log('authors successfully send')
               res.send(authors);
-             });
+             })
+            .catch(()=>{
+                console.log('author sending failed')
+                res.send(false)
+            })
             
 
 });
