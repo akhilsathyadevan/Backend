@@ -216,8 +216,11 @@ app.post('/api/signup',(req,res)=>{
           password:req.body.password,
           phone:req.body.phone
     }
-    var user=new SignupData(signup);
-    user.save();
+    .then((signup)=>{
+        var user=new SignupData(signup);
+        user.save();
+    })
+    
 
 })   
 app.get('/*', function(req, res) {
